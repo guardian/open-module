@@ -5,27 +5,7 @@ api_version: 1
 threadsafe: false
 
 handlers:
-- url: /
-  login: required
-  script: open_module.app
-
-- url: /create
-  login: required
-  script: open_module.app
-
-- url: /delete
-  login: required
-  script: open_module.app
-
-- url: /update
-  login: required
-  script: open_module.app
-
-- url: /list
-  login: required
-  script: open_module.app
-
-- url: /view
+- url: /.*
   script: open_module.app
 
 libraries:

@@ -39,14 +39,28 @@ class SnippetBase(webapp2.RequestHandler):
 
         snippet.put()
 
+    def get(self):
+        user = users.get_current_user()
+
+        if user:
+            self.render()
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
+
+    def post(self):
+        user = users.get_current_user()
+
+        if user:
+            self.process()
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
 
 class ListSnippits(SnippetBase):
-    def get(self):
+    def render(self):
         self.list()
 
-
 class Create(SnippetBase):
-    def post(self):
+    def process(self):
         snippet = Snippet()
         self.put(snippet)
         self.list()
@@ -59,7 +73,7 @@ class View(SnippetBase):
        self.response.out.write(template.render(snippet=snippet, id=id))
 
 class Delete(SnippetBase):
-    def get(self):
+    def render(self):
         id = self.request.get("id")
         key = ndb.Key("Snippets", long(id) )
         snippet = Snippet.get_by_id(long(id))
@@ -67,18 +81,17 @@ class Delete(SnippetBase):
         self.list()
 
 class Update(SnippetBase):
-    def get(self):
+    def render(self):
         id = self.request.get("id")
         snippet = Snippet.get_by_id(long(id))
         template = jinja_environment.get_template("update.html")
         self.response.out.write(template.render(snippet=snippet, id=id))
 
-    def post(self):
+    def process(self):
         id = self.request.get("id")
         snippet = Snippet.get_by_id(long(id))
         self.put(snippet)
         self.list()
-
 
 app = webapp2.WSGIApplication([
     ('/', Index),
