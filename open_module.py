@@ -4,6 +4,7 @@ import os
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from webapp2_extras import json
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), "template"))
@@ -18,11 +19,6 @@ class Snippet(ndb.Model):
     headline = ndb.StringProperty(indexed=True)
     link = ndb.StringProperty(indexed=False)
     copy = ndb.TextProperty(indexed=False)
-
-class Index(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_environment.get_template('create.html')
-        self.response.out.write(template.render())
 
 class SnippetBase(webapp2.RequestHandler):
     def list(self):
@@ -55,6 +51,12 @@ class SnippetBase(webapp2.RequestHandler):
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
+class Index(SnippetBase):
+    def render(self):
+        template = jinja_environment.get_template('create.html')
+        self.response.out.write(template.render())
+
+
 class ListSnippits(SnippetBase):
     def render(self):
         self.list()
@@ -65,8 +67,8 @@ class Create(SnippetBase):
         self.put(snippet)
         self.list()
 
-class View(SnippetBase):
-    def get(self):
+class Preview(SnippetBase):
+    def render(self):
        id = self.request.get("id")
        snippet = Snippet.get_by_id(long(id))
        template = jinja_environment.get_template("view_snippet.html")
@@ -93,12 +95,31 @@ class Update(SnippetBase):
         self.put(snippet)
         self.list()
 
+class View(webapp2.RequestHandler):
+    def get(self):
+        id = self.request.get("id")
+        snippet = Snippet.get_by_id(long(id))
+        template = jinja_environment.get_template("view_snippet.html")
+        html = template.render(snippet=snippet, id=id)
+        jsonResponse = {
+            'html' : html,
+            'headline' : snippet.headline,
+            'link' : snippet.link,
+            'copy' : snippet.copy,
+            'id' : id
+        }
+
+        self.response.headers['cache-control'] = 'max-age=900s'
+        self.response.headers['Access-Control-Allow-Origin:'] = '*'
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.encode(jsonResponse))
+
 app = webapp2.WSGIApplication([
     ('/', Index),
     ('/create', Create),
     ('/list', ListSnippits),
-    ('/view', View),
+    ('/preview', Preview),
     ('/update', Update),
-    ('/delete', Delete)
-
+    ('/delete', Delete),
+    ('/view', View)
 ])

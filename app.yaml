@@ -5,6 +5,10 @@ api_version: 1
 threadsafe: false
 
 handlers:
+- url: /view
+  secure: always
+  script: open_module.app
+
 - url: /.*
   script: open_module.app
 
