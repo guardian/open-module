@@ -12,6 +12,8 @@ jinja_environment = jinja2.Environment(
 
 DEFAULT_COLLECTION_NAME = "snippets";
 
+PAGE_SIZE = 25
+
 def snippet_key(snippet_collection_name=DEFAULT_COLLECTION_NAME):
     return ndb.Key('Snippets', snippet_collection_name);
 
@@ -22,11 +24,22 @@ class Snippet(ndb.Model):
 
 class SnippetBase(webapp2.RequestHandler):
     def list(self):
+
+        cursor = None
+        bookmark = self.request.get('bookmark')
+        if bookmark:
+            cursor = ndb.Cursor.from_websafe_string(bookmark)
+
         snippets_query = Snippet.query()
-        snippets = snippets_query.fetch(25)
+        snippets, next_cursor, more = snippets_query.fetch_page(PAGE_SIZE, start_cursor=cursor)
+
+
+        next_bookmark = None
+        if more:
+            next_bookmark = next_cursor.to_websafe_string()
 
         template = jinja_environment.get_template('list_snippets.html')
-        self.response.out.write(template.render(snippets=snippets))
+        self.response.out.write(template.render(snippets=snippets, bookmark=next_bookmark))
 
     def put(self, snippet):
         snippet.headline = self.request.get('headline')
@@ -110,9 +123,23 @@ class View(webapp2.RequestHandler):
         }
 
         self.response.headers['cache-control'] = 'max-age=900s'
-        self.response.headers['Access-Control-Allow-Origin:'] = '*'
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.encode(jsonResponse))
+
+class Populate(SnippetBase):
+
+    def render(self):
+
+        for i in range (200):
+            snippet = Snippet()
+            snippet.headline = 'Headline ' + str(i)
+            snippet.link = 'Link ' + str(i)
+            snippet.copy = 'Headline ' + str(i)
+            snippet.put()
+
+
+
 
 app = webapp2.WSGIApplication([
     ('/', Index),
@@ -121,5 +148,6 @@ app = webapp2.WSGIApplication([
     ('/preview', Preview),
     ('/update', Update),
     ('/delete', Delete),
-    ('/view', View)
+    ('/view', View),
+    ('/populate', Populate)
 ])

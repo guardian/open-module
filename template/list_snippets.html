@@ -35,7 +35,20 @@
 <br>
 <br>
 
-<a href="/">New Snippet</a>
+<table border="0" cellpadding="20" cellspacing="20">
+<tr>
+    <td width="42"></td>
+    <td>
+        <a href="/">New Snippet</a>
+    </td>
+    <td>
+        {% if bookmark %}
+             <a href="?bookmark={{ bookmark }}">Next</a>
+        {% endif %}
+
+    </td>
+</tr>
+</table>
 
 </body>
 </html>
