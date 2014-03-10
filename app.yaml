@@ -5,6 +5,15 @@ api_version: 1
 threadsafe: false
 
 handlers:
+# All URLs ending in .css or .js are treated as paths to static files in
+# the static/ directory. The URL pattern is a regexp, with a grouping that is
+# inserted into the path to the file.
+- url: /(.*\.(css|js))$
+  static_files: static/\1
+  upload: static/.*\.(css|js)$
+  http_headers:
+    cache-control: 'max-age=900s'
+
 - url: /view
   secure: always
   script: open_module.app
