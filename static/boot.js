@@ -81,7 +81,7 @@ define([], function() {
 
        if(!isModernBrowser) { return; }
 
-       var uri = element.getAttribute('data-src');
+       var uri = element.getAttribute('data-canonical-url');
 
        microAjax(uri, function(temp) {
            var html = JSON.parse(temp).html;
