@@ -2,13 +2,15 @@ import webapp2
 import jinja2
 import os
 
-from google.appengine.api import users
+from google.appengine.api import users, app_identity
 from google.appengine.ext import ndb
 from webapp2_extras import json
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), "template"))
 )
+
+server_url = app_identity.get_default_version_hostname()
 
 DEFAULT_COLLECTION_NAME = "snippets";
 
@@ -33,13 +35,12 @@ class SnippetBase(webapp2.RequestHandler):
         snippets_query = Snippet.query()
         snippets, next_cursor, more = snippets_query.fetch_page(PAGE_SIZE, start_cursor=cursor)
 
-
         next_bookmark = None
         if more:
             next_bookmark = next_cursor.to_websafe_string()
 
-        template = jinja_environment.get_template('list_snippets.html')
-        self.response.out.write(template.render(snippets=snippets, bookmark=next_bookmark))
+        template = jinja_environment.get_template('list.html')
+        self.response.out.write(template.render(snippets=snippets, bookmark=next_bookmark, server_url=server_url))
 
     def put(self, snippet):
         snippet.headline = self.request.get('headline')
@@ -84,7 +85,7 @@ class Preview(SnippetBase):
     def render(self):
        id = self.request.get("id")
        snippet = Snippet.get_by_id(long(id))
-       template = jinja_environment.get_template("view_snippet.html")
+       template = jinja_environment.get_template("view.html")
        self.response.out.write(template.render(snippet=snippet, id=id))
 
 class Delete(SnippetBase):
@@ -112,7 +113,7 @@ class View(webapp2.RequestHandler):
     def get(self):
         id = self.request.get("id")
         snippet = Snippet.get_by_id(long(id))
-        template = jinja_environment.get_template("view_snippet.html")
+        template = jinja_environment.get_template("view.html")
         html = template.render(snippet=snippet, id=id)
         jsonResponse = {
             'html' : html,
