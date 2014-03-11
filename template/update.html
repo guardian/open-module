@@ -1,12 +1,12 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+{% extends "base.html" %}
+{% block title %} Edit {% endblock %}
 
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Set up your open</title>
-</head>
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div id="content-container">
 
    <form action="/update" method="post">
       <input type="hidden" name="id" value="{{id}}">
@@ -15,5 +15,5 @@
       Copy: <div><textarea id="copy" name="copy" cols="60" rows="12">{{snippet.copy}}</textarea></div>
      <div><input type="submit" value="Update"></div>
    </form>
-</body>
-</html>
+</div>
+{% endblock %}

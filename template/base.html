@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    {% endblock %}
+</head>
+<body>
+<style>
+    #content {
+        margin-top: 50px;
+        position: absolute;
+    }
+    #content-container {
+        width: 875px;
+        position: absolute;
+        top: 20px;
+        left: 30px;
+    }
+    td {
+        padding: 5px;
+    }
+
+
+</style>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
