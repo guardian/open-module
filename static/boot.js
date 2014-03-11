@@ -71,7 +71,7 @@ function microAjax(url, callbackFunction)
    Gets the elements origin src, makes an ajax request to it, and replaces the element
    with the return html.
  */
-define('open-module', [], function() {
+define([], function() {
 
    function boot(element, context, config, mediator) {
        var isModernBrowser = 'querySelector' in document && (
