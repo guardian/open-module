@@ -11,9 +11,8 @@ handlers:
 - url: /(.*\.(css|js))$
   static_files: static/\1
   upload: static/.*\.(css|js)$
-  expiration: 1s
-#  http_headers:
-#    cache-control: 'max-age=900s'
+  http_headers:
+    cache-control: 'max-age=900s'
 
 - url: /view
   secure: always
