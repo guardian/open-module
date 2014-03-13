@@ -14,7 +14,7 @@
 
 {% block content %}
     <div id="content-container">
-    <table border="1">
+    <table class="table"">
         <tr>
             <th>Key</th>
             <th>Headline</th>
@@ -34,11 +34,10 @@
                 <td>{{snippet.headline}}</td>
                 <td>{{snippet.copy}}</td>
                 <td>{{snippet.link}}</td>
-                <td><a href="/preview?id={{id}}">Preview</a></td>
-                <td><a href="/delete?id={{id}}">Delete</a></td>
-                <td><a href="/update?id={{id}}">Edit</a></td>
+                <td><a type="button" class="btn btn-info" href="/preview?id={{id}}">Preview</a></td>
+                <td><a type="button" class="btn btn-info" href="/delete?id={{id}}">Delete</a></td>
+                <td><a type="button" class="btn btn-info" href="/update?id={{id}}">Edit</a></td>
                 <td><a href="/view?id={{id}}" onclick="linkCopy(this.text)">{{json_link}}</a></td>
-
             </tr>
         {% endfor %}
     </table>
@@ -54,7 +53,7 @@
         <td width="42"></td>
         <td>
             {% if bookmark %}
-                 <a href="?bookmark={{ bookmark }}">Next</a>
+                 <a href="list?bookmark={{ bookmark }}">Next</a>
             {% endif %}
 
         </td>

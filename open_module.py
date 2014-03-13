@@ -40,7 +40,7 @@ class SnippetBase(webapp2.RequestHandler):
             next_bookmark = next_cursor.to_websafe_string()
 
         template = jinja_environment.get_template('list.html')
-        self.response.out.write(template.render(snippets=snippets, bookmark=next_bookmark, server_url=server_url))
+        self.response.out.write(template.render(snippets=snippets, bookmark=next_bookmark, server_url=server_url, pageName="list"))
 
     def put(self, snippet):
         snippet.headline = self.request.get('headline')
@@ -68,7 +68,7 @@ class SnippetBase(webapp2.RequestHandler):
 class Index(SnippetBase):
     def render(self):
         template = jinja_environment.get_template('create.html')
-        self.response.out.write(template.render())
+        self.response.out.write(template.render(pageName="create"))
 
 
 class ListSnippits(SnippetBase):
