@@ -4,7 +4,8 @@
 {% block head %}
     {{ super() }}
     <script type="text/javascript">
-    function linkCopy(text) {
+    function linkCopy(e, text) {
+        e.preventDefault();
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
         return false;
     }
@@ -40,7 +41,7 @@
                             <td><a type="button" class="btn btn-xs btn-default" href="/preview?id={{id}}">Preview</a></td>
                             <td><a type="button" class="btn btn-xs btn-danger" href="/delete?id={{id}}">Delete</a></td>
                             <td><a type="button" class="btn btn-xs btn-info" href="/update?id={{id}}">Edit</a></td>
-                            <td><a href="/view?id={{id}}" onclick="linkCopy(this.text)">https://{{json_link}}</a></td>
+                            <td><a href="/view?id={{id}}" onclick="linkCopy(event, this.text)">https://{{json_link}}</a></td>
                         </tr>
                     {% endfor %}
                 </table>
