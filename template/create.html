@@ -1,13 +1,20 @@
 {% extends "base.html" %}
-{% block title %} Create new open thingy {% endblock %}
+{% block title %} Create new open module {% endblock %}
 
 {% block head %}
     {{ super() }}
 {% endblock %}
 
 {% block content %}
+
  <div class="row">
+     <h2>Create new open module.</h2>
+ </div>
+
+ <div class="row">
+
    <div class="class="col-md-6 col-md-offset-3">
+
    <form class="form-horizontal" role="form" action="/create" method="post">
        <div class="form-group">
             <label for="headline">Headine</label>
@@ -25,13 +32,13 @@
        </div>
        <div class="form-group">
                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-default">Create</button>
+                    <button type="submit" class="btn btn-success">Create</button>
                </div>
        </div>
    </form>
    </div>
 <br>
 <br>
-<a href="/list">See all</a>
+<a href="/list">View all</a>
 </div>
 {% endblock %}
