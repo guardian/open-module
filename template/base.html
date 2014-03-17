@@ -27,13 +27,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/list">List</a></li>
-                <li><a href="/">New</a></li>
+                <li {% if pageName == "list" %}class="active"{% endif %}><a href="/list">List</a></li>
+                <li {% if pageName == "create" %}class="active"{% endif %}><a href="/">New</a></li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container">
+    <br/>
     {% block content %}{% endblock %}
 </div>
 </body>
