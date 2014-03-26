@@ -79,13 +79,13 @@ class Create(SnippetBase):
     def process(self):
         snippet = Snippet()
         self.put(snippet)
-        self.list()
+        self.redirect('/list')
 
 class Preview(SnippetBase):
     def render(self):
        id = self.request.get("id")
        snippet = Snippet.get_by_id(long(id))
-       template = jinja_environment.get_template("view.html")
+       template = jinja_environment.get_template("preview.html")
        self.response.out.write(template.render(snippet=snippet, id=id))
 
 class Delete(SnippetBase):

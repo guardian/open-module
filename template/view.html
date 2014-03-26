@@ -1,8 +1,3 @@
-<figure class="element element-open open tone-accent-border b4" data-link-name="open-module" data-component-id="open-module">
-    <h2 class="open__head"><span class="open__head__accent tone-colour">Share your stories</span> {{snippet.headline}}</h2>
-    <p class="open__body">{{snippet.copy}}</p>
+{% import 'macro/view_module.html' as views %}
 
-    <a href="{{snippet.link}}" class="open__cta tone-colour">
-        <i class="open__cta-icon i i-chevron-right-mask tone-background"></i>Tell us your story…
-    </a>
-</figure>
+{{ views.figure(snippet, id ) }}
