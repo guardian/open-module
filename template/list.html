@@ -24,7 +24,6 @@
                     <tr>
                         <th>Key</th>
                         <th>Headline</th>
-                        <th>Copy</th>
                         <th>Link</th>
                         <th colspan="3">Actions</th>
                         <th>Composer link</th>
@@ -36,7 +35,6 @@
                             {% set json_link = server_url ~ "/view?id=" ~ id %}
                             <td>{{id}}</td>
                             <td>{{snippet.headline}}</td>
-                            <td>{{snippet.copy}}</td>
                             <td>{{snippet.link}}</td>
                             <td><a type="button" class="btn btn-xs btn-default" href="/preview?id={{id}}">Preview</a></td>
                             <td><a type="button" class="btn btn-xs btn-danger" href="/delete?id={{id}}">Delete</a></td>
