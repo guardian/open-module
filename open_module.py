@@ -1,6 +1,7 @@
 import webapp2
 import jinja2
 import os
+import datetime
 
 from google.appengine.api import users, app_identity
 from google.appengine.ext import ndb
@@ -20,8 +21,9 @@ def snippet_key(snippet_collection_name=DEFAULT_COLLECTION_NAME):
     return ndb.Key('Snippets', snippet_collection_name);
 
 class Snippet(ndb.Model):
-    headline = ndb.StringProperty(indexed=True)
+    headline = ndb.StringProperty()
     link = ndb.StringProperty(indexed=False)
+    created = ndb.DateTimeProperty(indexed=True, auto_now_add=True)
     copy = ndb.TextProperty(indexed=False)
 
 class SnippetBase(webapp2.RequestHandler):
@@ -32,7 +34,7 @@ class SnippetBase(webapp2.RequestHandler):
         if bookmark:
             cursor = ndb.Cursor.from_websafe_string(bookmark)
 
-        snippets_query = Snippet.query()
+        snippets_query = Snippet.query().order(-Snippet.created)
         snippets, next_cursor, more = snippets_query.fetch_page(PAGE_SIZE, start_cursor=cursor)
 
         next_bookmark = None
@@ -113,6 +115,7 @@ class View(webapp2.RequestHandler):
     def get(self):
         id = self.request.get("id")
         snippet = Snippet.get_by_id(long(id))
+
         template = jinja_environment.get_template("view.html")
         html = template.render(snippet=snippet, id=id)
         jsonResponse = {
@@ -143,7 +146,8 @@ class Populate(SnippetBase):
 
 
 app = webapp2.WSGIApplication([
-    ('/', Index),
+    ('/', ListSnippits),
+    ('/new', Index),
     ('/create', Create),
     ('/list', ListSnippits),
     ('/preview', Preview),
