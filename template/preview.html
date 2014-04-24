@@ -1,4 +1,17 @@
 {% import 'macro/view_module.html' as views %}
 
+<link rel="stylesheet" type="text/css" href="http://assets.guim.co.uk/stylesheets/webfonts.7d53f892337ddd92cd494d271b07b4bc.css" />
+<link rel="stylesheet" type="text/css" href="http://assets.guim.co.uk/stylesheets/old-ie.head.default.0c4457c5845c43f0d33487f81aea7b06.css" />
 <link rel="stylesheet" id="global-css" type="text/css" href="http://assets.guim.co.uk/stylesheets/global.b49e703b1ae8560365b6896620ddf935.css"/>
+<style>
+    .i,.caption:before,figcaption:before,blockquote.quoted:before { background-image: url(http://assets.guim.co.uk/images/global/sprite.e86a2692762626d7f85b3f9316f4fc41.png); }
+    .is-updating { background-image: url(http://assets.guim.co.uk/images/auto-update-activity.1a53d52f0d138de429587569677515c5.gif); }
+    .is-updating--dark { background-image: url(http://assets.guim.co.uk/images/auto-update-activity-dark.4965131bb283812ede2a0b3e69eaff7f.gif); }
+    .tweet { background-image: url(http://assets.guim.co.uk/images/twitter/bird.7825bd72ad58e41ac66ba3acbdeae40e.png); }
+    .svg .tweet { background-image: url(http://assets.guim.co.uk/images/twitter/bird.d1a2ed26432057c3d224a813c7e1221c.svg); }
+    .stars, .stars:after { background-image: url(http://assets.guim.co.uk/images/star-sprite.8ebdf08406d7992cd6fccc2427a771a3.png); }
+</style>
+
+<div class="tone-news" style="margin: 40px; width: 600px">
 {{ views.figure( snippet, id ) }}
+</div>
