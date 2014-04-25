@@ -2,10 +2,14 @@ import webapp2
 import jinja2
 import os
 import datetime
+import update_schema
 
 from google.appengine.api import users, app_identity
 from google.appengine.ext import ndb
+from google.appengine.ext import deferred
 from webapp2_extras import json
+from models import Snippet
+
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), "template"))
@@ -20,11 +24,6 @@ PAGE_SIZE = 25
 def snippet_key(snippet_collection_name=DEFAULT_COLLECTION_NAME):
     return ndb.Key('Snippets', snippet_collection_name);
 
-class Snippet(ndb.Model):
-    headline = ndb.StringProperty()
-    link = ndb.StringProperty(indexed=False)
-    created = ndb.DateTimeProperty(indexed=True, auto_now_add=True)
-    copy = ndb.TextProperty(indexed=False)
 
 class SnippetBase(webapp2.RequestHandler):
     def list(self):
@@ -48,11 +47,16 @@ class SnippetBase(webapp2.RequestHandler):
         snippet.headline = self.request.get('headline')
         snippet.link = self.request.get('link')
         snippet.copy = self.request.get('copy')
+        if ( self.request.get('label') ):
+            snippet.label = self.request.get('label')
+        if ( self.request.get('button_text') ):
+            snippet.button_text = self.request.get('button_text')
 
         snippet.put()
 
     def get(self):
         user = users.get_current_user()
+
 
         if user:
             self.render()
@@ -142,8 +146,10 @@ class Populate(SnippetBase):
             snippet.copy = 'Headline ' + str(i)
             snippet.put()
 
-
-
+class UpdateSchema(webapp2.RequestHandler):
+    def get(self):
+        deferred.defer(update_schema.UpdateSchema)
+        self.response.out.write('Schema migration succesfully inititated.')
 
 app = webapp2.WSGIApplication([
     ('/', ListSnippits),
@@ -154,5 +160,7 @@ app = webapp2.WSGIApplication([
     ('/update', Update),
     ('/delete', Delete),
     ('/view', View),
-    ('/populate', Populate)
+    ('/populate', Populate),
+    ('/update-schema', UpdateSchema)
+
 ])

@@ -4,6 +4,9 @@ runtime: python27
 api_version: 1
 threadsafe: false
 
+builtins:
+- deferred: on
+
 handlers:
 # All URLs ending in .css or .js are treated as paths to static files in
 # the static/ directory. The URL pattern is a regexp, with a grouping that is

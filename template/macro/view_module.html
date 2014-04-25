@@ -1,10 +1,10 @@
 {% macro figure(snippet, id) -%}
 <figure class="element element-open open tone-accent-border b4" data-link-name="open-module" data-component="open-module-{{id}}">
-    <h2 class="open__head"><span class="open__head__accent tone-colour">Share your stories</span> {{snippet.headline}}</h2>
+    <h2 class="open__head"><span class="open__head__accent tone-colour">{{snippet.label}}</span> {{snippet.headline}}</h2>
     <p class="open__body">{{snippet.copy}}</p>
 
     <a href="{{snippet.link}}" class="open__cta tone-colour">
-        <i class="open__cta-icon i i-chevron-right-mask tone-background"></i>Tell us your story…
+        <i class="open__cta-icon i i-chevron-right-mask tone-background"></i>{{snippet.button_text}}
     </a>
 </figure>
 
